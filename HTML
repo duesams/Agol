@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title> JS Stack map</title>
+
+  <style>
+    html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+  <script src="https://js.arcgis.com/4.18/"></script>
+   
+  <script>
+    var esriConfig = {
+      apiKey: "AAPTxy8BH1VEsoebNVZXo8HurKQVP8PWOfxuzYjdMuIGk7u1YyVthU1o8lLnxj2ur8dpMAL8Ub55z1RthTyo1-hIZGKRh5lFlMauHG5LDn2OaPJiBoJQ-8rBWW8nBPgjYAXvXdfhRmL5J4z0eXtsV9h3o9czM07mdtIeJBXPCZ5p0jmBC5rCp4hRr2JK5YDaaxguEukDHTdig7Nr485_uIj97SL6EXuPhwk4BsLQH5nwe0A.AT1_zi3VeksP"
+    };
+  </script>
+
+  <script>
+    require(["esri/Map", "esri/layers/GeoJSONLayer", "esri/views/MapView"], function(Map, GeoJSONLayer, MapView) {
+      const url = "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/MegaCities_1/FeatureServer";
+
+      const template = {
+        title: "MeGa City: {CITY_NAME}",
+        content: "Mega city population: {POP}",
+        fieldInfos: [
+          {
+            fieldName: 'POP',
+            format: {
+              digitSeparator: true,
+              places: 0
+            }
+          }
+        ]
+      };
+
+      const renderer = {
+        type: "simple",
+        field: "mag",
+        symbol: {
+          type: "simple-marker",
+          color: "orange",
+          outline: {
+            color: "white"
+          }
+        },
+        visualVariables: [{
+          type: "size",
+          field: "mag",
+          stops: [{
+              value: 2.5,
+              size: "4px"
+            },
+            {
+              value: 8,
+              size: "40px"
+            }
+          ]
+        }]
+      };
+
+      const geojsonLayer = new GeoJSONLayer({
+        url: url,
+        copyright: "USGS",
+        popupTemplate: template,
+        renderer: renderer,
+        orderBy: {
+          field: "mag"
+        }
+      });
+
+      const map = new Map({
+        basemap: "gray-vector",
+        layers: [geojsonLayer]
+      });
+
+      const view = new MapView({
+        container: "viewDiv",
+        center: [-168, 46],
+        zoom: 2,
+        map: map
+      });
+    });
+  </script>
+</head>
+<body>
+  <div id="viewDiv"></div>
+</body>
+</html>
