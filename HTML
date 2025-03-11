@@ -14,81 +14,63 @@
       height: 100%;
       width: 100%;
     }
+ /* I ended up editing this code because last time i did not call it correctly */   
   </style>
-  <script src="https://js.arcgis.com/4.18/"></script>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.18/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.25/"></script>
    
-  <script>
-    var esriConfig = {
-      apiKey: "AAPTxy8BH1VEsoebNVZXo8HurKQVP8PWOfxuzYjdMuIGk7u1YyVthU1o8lLnxj2ur8dpMAL8Ub55z1RthTyo1-hIZGKRh5lFlMauHG5LDn2OaPJiBoJQ-8rBWW8nBPgjYAXvXdfhRmL5J4z0eXtsV9h3o9czM07mdtIeJBXPCZ5p0jmBC5rCp4hRr2JK5YDaaxguEukDHTdig7Nr485_uIj97SL6EXuPhwk4BsLQH5nwe0A.AT1_zi3VeksP"
-    };
-  </script>
+
 
   <script>
-    require(["esri/Map", "esri/layers/GeoJSONLayer", "esri/views/MapView"], function(Map, GeoJSONLayer, MapView) {
-      const url = "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/MegaCities_1/FeatureServer";
+    require([
+    "esri/config",
+    "esri/Map", 
+    "esri/views/MapView"],
 
-      const template = {
-        title: "MeGa City: {CITY_NAME}",
-        content: "Mega city population: {POP}",
-        fieldInfos: [
-          {
-            fieldName: 'POP',
-            format: {
-              digitSeparator: true,
-              places: 0
-            }
-          }
-        ]
-      };
-
-      const renderer = {
-        type: "simple",
-        field: "mag",
-        symbol: {
-          type: "simple-marker",
-          color: "orange",
-          outline: {
-            color: "white"
-          }
-        },
-        visualVariables: [{
-          type: "size",
-          field: "mag",
-          stops: [{
-              value: 2.5,
-              size: "4px"
-            },
-            {
-              value: 8,
-              size: "40px"
-            }
-          ]
-        }]
-      };
-
-      const geojsonLayer = new GeoJSONLayer({
-        url: url,
-        copyright: "USGS",
-        popupTemplate: template,
-        renderer: renderer,
-        orderBy: {
-          field: "mag"
-        }
-      });
-
+    /*adding graphic and graphicslayer */
+    function(esriConfig, Map,MapView, Graphic, GraphicsLayer,) {
+      esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurKQVP8PWOfxuzYjdMuIGk7u1YyVthU1o8lLnxj2ur8dpMAL8Ub55z1RthTyo1-hIZGKRh5lFlMauHG5LDn2OaPJiBoJQ-8rBWW8nBPgjYAXvXdfhRmL5J4z0eXtsV9h3o9czM07mdtIeJBXPCZ5p0jmBC5rCp4hRr2JK5YDaaxguEukDHTdig7Nr485_uIj97SL6EXuPhwk4BsLQH5nwe0A.AT1_zi3VeksP";
       const map = new Map({
-        basemap: "gray-vector",
-        layers: [geojsonLayer]
+        basemap: "satellite" // Basemap layer service
       });
 
       const view = new MapView({
-        container: "viewDiv",
-        center: [-168, 46],
-        zoom: 2,
-        map: map
+      map: map,
+      center: [-81.6137780, 27.2421670], // Longitude, latitude
+      zoom: 19, // Zoom level
+      container: "viewDiv" // Div element
       });
+
+      const graphicsLayer = new GraphicsLayer();
+      map.add(graphicsLayer);
+
+      const point = { //Create a point  
+  type: "point",  
+  longitude: -97.750689,    //long lat of Stevie Ray Vaughan Statue
+  latitude: 30.263098
+  };
+
+  const simpleMarkerSymbol = {  
+  type: "simple-marker",  
+  color: [0, 0, 139],  // Color of blues rock
+  outline: {  
+    color: [255, 255, 255], // White  
+    width: 1
+  }  
+};
+
+const pointGraphic = new Graphic({  
+  geometry: point,  
+  symbol: simpleMarkerSymbol  
+});
+
+graphicsLayer.add(pointGraphic);
+
     });
+
+    
   </script>
+
 </head>
 <body>
   <div id="viewDiv"></div>
