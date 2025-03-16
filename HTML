@@ -4,9 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title> Hello AGOL</title>
-</head>
 
-<body>
   <style>
     html,
     body,
@@ -20,9 +18,10 @@
   </style>
   <link rel="stylesheet" href="https://js.arcgis.com/4.18/esri/themes/light/main.css">
   <script src="https://js.arcgis.com/4.25/"></script>
-   
 
-
+</head>
+<body>
+  <div id="viewDiv"></div>
   <script>
     require([
     "esri/config",
@@ -38,13 +37,36 @@
 
       const view = new MapView({
       map: map,
-      center: [-81.6137780, 27.2421670], // Longitude, latitude
-      zoom: 19, // Zoom level
+      center: [-81.613951, 27.243914], // Longitude, latitude
+      zoom: 17.5, // Zoom level
       container: "viewDiv" // Div element
       });
 
       const graphicsLayer = new GraphicsLayer();
       map.add(graphicsLayer);
+
+      const point = { //Create a point
+        type: "point",
+        longitude: -81.613951,
+        latitude: 27.243914
+      };
+      const simpleMarkerSymbol = { //Create a simple marker symbol
+        type: "simple-marker",
+        color: [226, 119, 40], // Orange
+        outline: {
+          color: [255, 255, 255], // White
+          width: 1
+        }
+      };
+      const pointGraphic = new Graphic({ //Create a graphic
+        geometry: point,
+        symbol: simpleMarkerSymbol,
+        popupTemplate: {
+          title: "Location",
+          content: "Citrus Grove"
+        }
+      });
+      graphicsLayer.add(pointGraphic);
 
   const polygon = { //Create a polygon  
   type: "polygon", 
@@ -87,8 +109,8 @@ graphicsLayer.add(polygonGraphic);
     });
 
     
-  </script>
+    </script>
 
-</body>
+  </body>
 
 </html>
