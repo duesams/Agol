@@ -16,7 +16,7 @@
     }
  /* I ended up editing this code because last time i did not call it correctly */   
   </style>
-  <link rel="stylesheet" href="https://js.arcgis.com/4.18/esri/themes/light/main.css">
+  <link rel="stylesheet" href="https://js.arcgis.com/4.25/esri/themes/light/main.css">
   <script src="https://js.arcgis.com/4.25/"></script>
 
 </head>
@@ -26,10 +26,13 @@
     require([
     "esri/config",
     "esri/Map", 
-    "esri/views/MapView"],
+    "esri/views/MapView",
+    "esri/layer/GraphicsLayer",
+    "esri/Graphic"
+  ],
 
     /*adding graphic and graphicslayer */
-    function(esriConfig, Map,MapView, Graphic, GraphicsLayer,) {
+    function(esriConfig, Map, MapView, GraphicsLayer, Graphic) {
       esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurKQVP8PWOfxuzYjdMuIGk7u1YyVthU1o8lLnxj2ur8dpMAL8Ub55z1RthTyo1-hIZGKRh5lFlMauHG5LDn2OaPJiBoJQ-8rBWW8nBPgjYAXvXdfhRmL5J4z0eXtsV9h3o9czM07mdtIeJBXPCZ5p0jmBC5rCp4hRr2JK5YDaaxguEukDHTdig7Nr485_uIj97SL6EXuPhwk4BsLQH5nwe0A.AT1_zi3VeksP";
       const map = new Map({
         basemap: "satellite" // Basemap layer service
@@ -44,29 +47,6 @@
 
       const graphicsLayer = new GraphicsLayer();
       map.add(graphicsLayer);
-
-      const point = { //Create a point
-        type: "point",
-        longitude: -81.613951,
-        latitude: 27.243914
-      };
-      const simpleMarkerSymbol = { //Create a simple marker symbol
-        type: "simple-marker",
-        color: [226, 119, 40], // Orange
-        outline: {
-          color: [255, 255, 255], // White
-          width: 1
-        }
-      };
-      const pointGraphic = new Graphic({ //Create a graphic
-        geometry: point,
-        symbol: simpleMarkerSymbol,
-        popupTemplate: {
-          title: "Location",
-          content: "Citrus Grove"
-        }
-      });
-      graphicsLayer.add(pointGraphic);
 
   const polygon = { //Create a polygon  
   type: "polygon", 
@@ -88,19 +68,13 @@
 };  
 
 const popupTemplate = {  
-  title: "Name",  
-  content: "Description"  
+  title: "Soil Health Zone",  
+  content: "Soil Health in Citrus Groves"  
 };
-const attributes = {  
-  Name: "Graphic",  
-  Description: "Soil Health in Citrus Groves"  
-};
-  
+ 
 const polygonGraphic = new Graphic({  
   geometry: polygon,  
   symbol: simpleFillSymbol, 
-  
-  attributes: attributes,
   popupTemplate: popupTemplate,
 });
 
