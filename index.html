@@ -109,11 +109,10 @@
         }
       };
 
-      const airportsLayer = new FeatureLayer({
-        url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/US_Airports_assign/FeatureServer",
-        outFields: ["Fac_Name", "City", "State_Name", "Fac_Type"],
-        popupTemplate: popupAir 
-      });
+      const airportLayer = new FeatureLayer({
+          url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/US_Airports/FeatureServer",
+          renderer: airportRenderer
+        });
   
       map.add(airportsLayer);
     });
