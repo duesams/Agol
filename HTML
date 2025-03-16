@@ -84,18 +84,30 @@ graphicsLayer.add(polygonGraphic);
 // Define a pop-up for usaeduLayer
 const popupSoilusa = {
   "title": "Soil Health Zone",
-  "content": "<b>Name:</b> {NAME}<br><b>Soil Carbon:</b> {SOIL_CARB}<br>"
+  "content": "<b>Cation Exchange Activity Class:</b> {taxceactcl}<br><b>Carbonate Reaction:</b> {taxreaction}<br>"
 }
 
 const soilLayer = new FeatureLayer({
   url: "https://landscape11.arcgis.com/arcgis/rest/services/USA_Soils_Map_Units/featureserver", //get URL from AGOL Item Page
-  outFields: ["NAME","SOIL_CARB"],
+  outFields: ["taxceactcl","taxreaction"],
   popupTemplate: popupSoilusa
 });
 
 //adding the feature layer to the map
 map.add(soilLayer);
 
+const popupAir = {
+  title: "Us Airports",
+  content: "Name: {Fac_Name} <br> City: {City} <br> State: {State_Name} <br> Type: {Fac_Type}"
+};  
+const airportsLayer = new FeatureLayer({
+  url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/US_Airports_assign/FeatureServer",
+  outFields: ["Fac_Name", "City", "State_Name", "Fac_Type"],
+    popupTemplate: popupAir 
+  });
+  
+    map.add(airportsLayer);
+  
     });
     
     </script>
