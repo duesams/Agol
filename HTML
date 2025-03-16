@@ -100,6 +100,16 @@ const popupAir = {
   title: "Us Airports",
   content: "Name: {Fac_Name} <br> City: {City} <br> State: {State_Name} <br> Type: {Fac_Type}"
 };  
+
+const airportRenderer = {
+  "type": "simple",
+  "symbol": {
+    "type": "picture-marker",
+    "url": "https://sounny.github.io/agol/outline_local_airport_black_24dp.png",
+    "width": "18px",
+    "height": "18px"
+  }
+}
 const airportsLayer = new FeatureLayer({
   url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/US_Airports_assign/FeatureServer",
   outFields: ["Fac_Name", "City", "State_Name", "Fac_Type"],
