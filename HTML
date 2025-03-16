@@ -44,27 +44,43 @@
       const graphicsLayer = new GraphicsLayer();
       map.add(graphicsLayer);
 
-      const point = { //Create a point  
-  type: "point",  
-  longitude: -97.750689,    //long lat of Stevie Ray Vaughan Statue
-  latitude: 30.263098
+  const polygon = { //Create a polygon  
+  type: "polygon", 
+  rings: [  
+    [-81.613691, 27.245509], // long, lat 
+    [-81.614276, 27.245510],  
+    [-81.613667, 27.242216],  
+    [-81.614257, 27.242210] 
+  ] 
   };
 
-  const simpleMarkerSymbol = {  
-  type: "simple-marker",  
-  color: [0, 0, 139],  // Color of blues rock
+  const simpleFillSymbol = {  
+  type: "simple-fill",
+  color: [227, 139, 79, 0.8],  // Color of the polygon
   outline: {  
     color: [255, 255, 255], // White  
     width: 1
-  }  
-};
+  }
+};  
 
-const pointGraphic = new Graphic({  
-  geometry: point,  
-  symbol: simpleMarkerSymbol  
+const popupTemplate = {  
+  title: "Name",  
+  content: "Description"  
+};
+const attributes = {  
+  Name: "Graphic",  
+  Description: "Soil Health in Citrus Groves"  
+};
+  
+const polygonGraphic = new Graphic({  
+  geometry: polygon,  
+  symbol: simpleFillSymbol, 
+  
+  attributes: attributes,
+  popupTemplate: popupTemplate,
 });
 
-graphicsLayer.add(pointGraphic);
+graphicsLayer.add(polygonGraphic);
 
     });
 
