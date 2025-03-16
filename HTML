@@ -23,25 +23,26 @@
 <body>
   <div id="viewDiv"></div>
   <script>
-    require([
+    require([ // more like a command of what a want to use, giving the web the ability to do things.
     "esri/config",
     "esri/Map", 
     "esri/views/MapView",
     "esri/layers/GraphicsLayer",
-    "esri/Graphic"
+    "esri/Graphic",
+    "esri/layers/FeatureLayer"
   ],
 
     /*adding graphic and graphicslayer */
-    function(esriConfig, Map, MapView, GraphicsLayer, Graphic) {
+    function(esriConfig, Map, MapView, GraphicsLayer, Graphic, FeartureLayer) {
       esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurKQVP8PWOfxuzYjdMuIGk7u1YyVthU1o8lLnxj2ur8dpMAL8Ub55z1RthTyo1-hIZGKRh5lFlMauHG5LDn2OaPJiBoJQ-8rBWW8nBPgjYAXvXdfhRmL5J4z0eXtsV9h3o9czM07mdtIeJBXPCZ5p0jmBC5rCp4hRr2JK5YDaaxguEukDHTdig7Nr485_uIj97SL6EXuPhwk4BsLQH5nwe0A.AT1_zi3VeksP";
       const map = new Map({
-        basemap: "satellite" // Basemap layer service
+        basemap: "hybrid" // Basemap layer service
       });
 
       const view = new MapView({
       map: map,
       center: [-81.613951, 27.243914], // Longitude, latitude
-      zoom: 17.5, // Zoom level
+      zoom: 13, // Zoom level
       container: "viewDiv" // Div element
       });
 
@@ -79,6 +80,21 @@ const polygonGraphic = new Graphic({
 });
 
 graphicsLayer.add(polygonGraphic);
+
+// Define a pop-up for usaeduLayer
+const popupSoilusa = {
+  "title": "Soil Health Zone",
+  "content": "<b>Name:</b> {NAME}<br><b>Soil Carbon:</b> {SOIL_CARB}<br>"
+}
+
+const soilLayer = new FeatureLayer({
+  url: "https://landscape11.arcgis.com/arcgis/rest/services/USA_Soils_Map_Units/featureserver", //get URL from AGOL Item Page
+  outFields: ["NAME","SOIL_CARB"],
+  popupTemplate: popupSoilusa
+});
+
+//adding the feature layer to the map
+map.add(soilLayer);
 
     });
     
