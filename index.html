@@ -27,12 +27,12 @@
       "esri/config",
       "esri/Map", 
       "esri/views/MapView",
-      "esri/Graphic",
       "esri/layers/GraphicsLayer",
+      "esri/Graphic",
       "esri/layers/FeatureLayer",
       "esri/widgets/Editor"
     ],
-    function(esriConfig, Map, MapView, Graphic, GraphicsLayer, FeatureLayer, Editor) {
+    function(esriConfig, Map, MapView, GraphicsLayer, Graphic, FeatureLayer, Editor) {
       esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurKQVP8PWOfxuzYjdMuIGk7u1YyVthU1o8lLnxj2ur8dpMAL8Ub55z1RthTyo1-hIZGKRh5lFlMauHG5LDn2OaPJiBoJQ-8rBWW8nBPgjYAXvXdfhRmL5J4z0eXtsV9h3o9czM07mdtIeJBXPCZ5p0jmBC5rCp4hRr2JK5YDaaxguEukDHTdig7Nr485_uIj97SL6EXuPhwk4BsLQH5nwe0A.AT1_zi3VeksP";
       
       const map = new Map({
@@ -45,6 +45,27 @@
         zoom: 13, // Zoom level
         container: "viewDiv" // Div element
       });
+      const simpleFillSymbol = {  
+      type: "simple-fill",
+      color: [227, 139, 79, 0.8],  // Color of the polygon
+      outline: {  
+      color: [255, 255, 255], // White  
+      width: 1
+      }
+  };
+
+      const graphicsLayer = new GraphicsLayer();
+      map.add(graphicsLayer);
+
+      const polygon = { // Create a polygon  
+        type: "polygon", 
+        rings: [  
+          [-81.613677, 27.242217], // long, lat 
+          [-81.613697, 27.245482],  
+          [-81.614283, 27.245513],  
+          [-81.614278, 27.242235] 
+        ] 
+      };
 
 const popupTemplate = {  
   title: "Soil Health Zone",  
@@ -58,28 +79,6 @@ const polygonGraphic = new Graphic({
 });
 
 graphicsLayer.add(polygonGraphic);
-
-const simpleFillSymbol = {  
-  type: "simple-fill",
-  color: [227, 139, 79, 0.8],  // Color of the polygon
-  outline: {  
-    color: [255, 255, 255], // White  
-    width: 1
-  }
-};
-
-const graphicsLayer = new GraphicsLayer();
-      map.add(graphicsLayer);
-
-      const polygon = { // Create a polygon  
-        type: "polygon", 
-        rings: [  
-          [-81.613677, 27.242217], // long, lat 
-          [-81.613697, 27.245482],  
-          [-81.614283, 27.245513],  
-          [-81.614278, 27.242235] 
-        ] 
-      };
 
       const popupSoilusa = {
         "title": "Soil Health",
@@ -106,6 +105,7 @@ const airportsLayer = new FeatureLayer({
   
     map.add(airportsLayer);
     //adding the const for the feature layer
+
 const mysoil = new FeatureLayer({
  url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Soil_Health_mine/FeatureServer",
  
@@ -116,42 +116,17 @@ const mysoil = new FeatureLayer({
 //adding the feature layer to the map
 map.add(mysoil);
 
-// Set the point layer's LayerInfo
 const pointInfos = {
-  layer: mysoil,
-  fieldConfig: [
-    {
-      name: "CEAC",
-      label: "Cation Exchange Activity Class",
-      editorType: "text-box",
-      required: true,
-      format: {
-        places: 0,
-        digitSeparator: true
-      }
-    }
-  ]
-};
-
-
-      const airportRenderer = {
-        type: "simple",
-        symbol: {
-          type: "picture-marker",
-          url: "https://sounny.github.io/agol/outline_local_airport_black_24dp.png",
-          width: "18px",
-          height: "18px"
-        }
-      };
-
-      const airportLayer = new FeatureLayer({
-          url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/US_Airports/FeatureServer",
-          renderer: airportRenderer
-        });
-  
-      map.add(airportsLayer);
+  "title": "Soil Health",
+  "content": "<b>Cation Exchange Activity Class:</b> {CEAC}"
+};  
+const editor = new Editor({
+  view: view,
+  layerInfos: [ pointInfos ]
+});
+view.ui.add(editor, "top-right");
     });
   </script>
 </body>
->>>>>>> origin/main
 </html>
+``` 
