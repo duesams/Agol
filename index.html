@@ -108,7 +108,46 @@ const airportsLayer = new FeatureLayer({
   });
   
     map.add(airportsLayer);
-  
+    //adding the const for the feature layer
+const mysoil = new FeatureLayer({
+ url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Soil_Health_mine/FeatureServer",
+ 
+ //adding the popup here
+ outFields: ["CEAC"],
+});
+
+//adding the feature layer to the map
+map.add(mysoil);
+
+// Set the point layer's LayerInfo
+const pointInfos = {
+ layer: mysoil,
+ fieldConfig: [
+   {
+     name: "CEAC",
+     label: "Cation Exchange Activity Class",
+     editorType: "text-box",
+     editorType: "text-box",
+     required: true,
+     visible: true,
+     editable: true,
+     format: {
+       places: 0,
+       digitSeparator: true
+     }
+   }
+ ]
+}
+
+// Begin Editor constructor
+const editor = new Editor({
+ view: view,
+ layerInfos: [pointInfos]
+ }); // End Editor constructor
+
+// Add the widget to the view
+view.ui.add(editor, "top-right");
+    
     });
     
     </script>
