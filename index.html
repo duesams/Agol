@@ -14,10 +14,7 @@
       height: 100%;
       width: 100%;
     }
-<<<<<<< HEAD
  /* I ended up editing this code because last time i did not call it correctly */   
-=======
->>>>>>> origin/main
   </style>
   <link rel="stylesheet" href="https://js.arcgis.com/4.25/esri/themes/light/main.css">
   <script src="https://js.arcgis.com/4.25/"></script>
@@ -26,98 +23,73 @@
 <body>
   <div id="viewDiv"></div>
   <script>
-<<<<<<< HEAD
-    require([ // more like a command of what a want to use, giving the web the ability to do things.
-    "esri/config",
-    "esri/Map", 
-    "esri/views/MapView",
-    "esri/Graphic",
-    "esri/layers/GraphicsLayer",
-    "esri/layers/FeatureLayer",
-    "esri/widgets/Editor",
-  ],
-
-    /*adding graphic and graphicslayer */
-    function(esriConfig, Map, MapView, Graphic, GraphicsLayer, FeatureLayer, Editor) {
-      esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurKQVP8PWOfxuzYjdMuIGk7u1YyVthU1o8lLnxj2ur8dpMAL8Ub55z1RthTyo1-hIZGKRh5lFlMauHG5LDn2OaPJiBoJQ-8rBWW8nBPgjYAXvXdfhRmL5J4z0eXtsV9h3o9czM07mdtIeJBXPCZ5p0jmBC5rCp4hRr2JK5YDaaxguEukDHTdig7Nr485_uIj97SL6EXuPhwk4BsLQH5nwe0A.AT1_zi3VeksP";
-=======
     require([
       "esri/config",
       "esri/Map", 
       "esri/views/MapView",
-      "esri/layers/GraphicsLayer",
       "esri/Graphic",
-      "esri/layers/FeatureLayer"
+      "esri/layers/GraphicsLayer",
+      "esri/layers/FeatureLayer",
+      "esri/widgets/Editor"
     ],
-    function(esriConfig, Map, MapView, GraphicsLayer, Graphic, FeatureLayer) {
+    function(esriConfig, Map, MapView, Graphic, GraphicsLayer, FeatureLayer, Editor) {
       esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurKQVP8PWOfxuzYjdMuIGk7u1YyVthU1o8lLnxj2ur8dpMAL8Ub55z1RthTyo1-hIZGKRh5lFlMauHG5LDn2OaPJiBoJQ-8rBWW8nBPgjYAXvXdfhRmL5J4z0eXtsV9h3o9czM07mdtIeJBXPCZ5p0jmBC5rCp4hRr2JK5YDaaxguEukDHTdig7Nr485_uIj97SL6EXuPhwk4BsLQH5nwe0A.AT1_zi3VeksP";
       
->>>>>>> origin/main
       const map = new Map({
         basemap: "hybrid" // Basemap layer service
       });
 
       const view = new MapView({
-<<<<<<< HEAD
-      map: map,
-      center: [-81.613951, 27.243914], // Longitude, latitude
-      zoom: 13, // Zoom level
-      container: "viewDiv" // Div element
-=======
         map: map,
         center: [-81.613951, 27.243914], // Longitude, latitude
         zoom: 13, // Zoom level
         container: "viewDiv" // Div element
->>>>>>> origin/main
       });
 
-      const graphicsLayer = new GraphicsLayer();
-      map.add(graphicsLayer);
+const popupTemplate = {  
+  title: "Soil Health Zone",  
+  content: "Soil Health in Citrus Groves"  
+};
 
-<<<<<<< HEAD
-  const polygon = { //Create a polygon  
-  type: "polygon", 
-  rings: [  
-    [-81.613677, 27.242217], // long, lat 
-    [-81.613697, 27.245482],  
-    [-81.614283, 27.245513],  
-    [-81.614278, 27.242235] 
-  ] 
-  };
+const polygonGraphic = new Graphic({  
+  geometry: polygon,  
+  symbol: simpleFillSymbol, 
+  popupTemplate: popupTemplate
+});
 
-  const simpleFillSymbol = {  
+graphicsLayer.add(polygonGraphic);
+
+const simpleFillSymbol = {  
   type: "simple-fill",
   color: [227, 139, 79, 0.8],  // Color of the polygon
   outline: {  
     color: [255, 255, 255], // White  
     width: 1
   }
-};  
-
-const popupTemplate = {  
-  title: "Soil Health Zone",  
-  content: "Soil Health in Citrus Groves"  
 };
- 
-const polygonGraphic = new Graphic({  
-  geometry: polygon,  
-  symbol: simpleFillSymbol, 
-  popupTemplate: popupTemplate,
-});
 
-graphicsLayer.add(polygonGraphic);
+const graphicsLayer = new GraphicsLayer();
+      map.add(graphicsLayer);
 
-// Define a pop-up for usaeduLayer
-const popupSoilusa = {
-  "title": "Soil Health Zone",
-  "content": "<b>Cation Exchange Activity Class:</b> {taxceactcl}<br><b>Carbonate Reaction:</b> {taxreaction}<br>"
-}
+      const polygon = { // Create a polygon  
+        type: "polygon", 
+        rings: [  
+          [-81.613677, 27.242217], // long, lat 
+          [-81.613697, 27.245482],  
+          [-81.614283, 27.245513],  
+          [-81.614278, 27.242235] 
+        ] 
+      };
 
-const soilLayer = new FeatureLayer({
-  url: "https://landscape11.arcgis.com/arcgis/rest/services/USA_Soils_Map_Units/featureserver", //get URL from AGOL Item Page
-  outFields: ["taxceactcl","taxreaction"],
-  popupTemplate: popupSoilusa
-});
+      const popupSoilusa = {
+        "title": "Soil Health",
+        "content": "<b>Cation Exchange Activity Class:</b> {taxceactcl}<br><b>Carbonate Reaction:</b> {taxreaction}<br>"
+      }   
+      const soilLayer = new FeatureLayer({
+      url: "https://landscape11.arcgis.com/arcgis/rest/services/USA_Soils_Map_Units/featureserver", //get URL from AGOL Item Page
+      outFields: ["taxceactcl","taxreaction"],
+      popupTemplate: popupSoilusa
+    });
 
 //adding the feature layer to the map
 map.add(soilLayer);
@@ -145,93 +117,22 @@ const mysoil = new FeatureLayer({
 map.add(mysoil);
 
 // Set the point layer's LayerInfo
-const pointInfos = {git add -A
-git commit -m "Your commit message"
- layer: mysoil,
- fieldConfig: [
-   {
-     name: "CEAC",
-     label: "Cation Exchange Activity Class",
-     editorType: "text-box",
-     editorType: "text-box",
-     required: true,
-     visible: true,
-     editable: true,
-     format: {
-       places: 0,
-       digitSeparator: true
-     }
-   }
- ]
-}
+const pointInfos = {
+  layer: mysoil,
+  fieldConfig: [
+    {
+      name: "CEAC",
+      label: "Cation Exchange Activity Class",
+      editorType: "text-box",
+      required: true,
+      format: {
+        places: 0,
+        digitSeparator: true
+      }
+    }
+  ]
+};
 
-// Begin Editor constructor
-const editor = new Editor({
- view: view,
- layerInfos: [pointInfos]
- }); // End Editor constructor
-
-// Add the widget to the view
-view.ui.add(editor, "top-right");
-    
-    });
-    
-    </script>
-
-  </body>
-
-=======
-      const polygon = { // Create a polygon  
-        type: "polygon", 
-        rings: [  
-          [-81.613677, 27.242217], // long, lat 
-          [-81.613697, 27.245482],  
-          [-81.614283, 27.245513],  
-          [-81.614278, 27.242235] 
-        ] 
-      };
-
-      const simpleFillSymbol = {  
-        type: "simple-fill",
-        color: [227, 139, 79, 0.8],  // Color of the polygon
-        outline: {  
-          color: [255, 255, 255], // White  
-          width: 1
-        }
-      };  
-
-      const popupTemplate = {  
-        title: "Soil Health Zone",  
-        content: "Soil Health in Citrus Groves"  
-      };
- 
-      const polygonGraphic = new Graphic({  
-        geometry: polygon,  
-        symbol: simpleFillSymbol, 
-        popupTemplate: popupTemplate
-      });
-
-      graphicsLayer.add(polygonGraphic);
-
-      // Define a pop-up for usaeduLayer
-      const popupSoilusa = {
-        title: "Soil Health Zone",
-        content: "<b>Cation Exchange Activity Class:</b> {taxceactcl}<br><b>Carbonate Reaction:</b> {taxreaction}<br>"
-      };
-
-      const soilLayer = new FeatureLayer({
-        url: "https://landscape11.arcgis.com/arcgis/rest/services/USA_Soils_Map_Units/featureserver", // get URL from AGOL Item Page
-        outFields: ["taxceactcl", "taxreaction"],
-        popupTemplate: popupSoilusa
-      });
-
-      // Adding the feature layer to the map
-      map.add(soilLayer);
-
-      const popupAir = {
-        title: "Us Airports",
-        content: "Name: {Fac_Name} <br> City: {City} <br> State: {State_Name} <br> Type: {Fac_Type}"
-      };  
 
       const airportRenderer = {
         type: "simple",
